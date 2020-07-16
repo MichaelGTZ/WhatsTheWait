@@ -1,6 +1,10 @@
 package com.example.whatsthewait;
 
-public class RestaurantItem {
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
+@ParseClassName("RestaurantItem")
+public class RestaurantItem extends ParseObject {
 
     String restaurantName;
     double rating;
