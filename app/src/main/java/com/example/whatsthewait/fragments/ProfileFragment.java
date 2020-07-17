@@ -20,11 +20,13 @@ public class ProfileFragment extends Fragment {
 
     public static final String TAG = "ProfileFragment";
 
+    // Items on the fragment_profile.xml layout
     Button btnLogout;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragments_profile, container, false);
     }
 
@@ -32,12 +34,13 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Initialization of each layout item
         btnLogout = view.findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "onClick log out button");
-                logoutUser();
+                logoutUser(); // Should this method be typed out here?
             }
         });
     }

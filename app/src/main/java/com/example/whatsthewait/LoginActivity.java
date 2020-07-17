@@ -16,6 +16,8 @@ import com.parse.ParseUser;
 public class LoginActivity extends AppCompatActivity {
 
     public static final String TAG = "LoginActivity";
+
+    // Items on the activity_login.xml layout
     private EditText etUsername;
     private EditText etPassword;
     private Button btnLogin;
@@ -31,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
             goToMainActivity();
         }
 
+        // Initialization of each layout item
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
 
@@ -38,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "onClick login button");
+                Log.i(TAG, "Login button was clicked.");
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
                 loginUser(username, password);
@@ -49,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "onClick sign up button");
+                Log.i(TAG, "Sign up button was clicked.");
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
                 startActivity(intent);
             }
@@ -66,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.e(TAG, "Issue with login", e);
                     return;
                 } else {
-                    goToMainActivity();
+                    goToMainActivity(); // Should this method just be put into this else???
                 }
             }
         });

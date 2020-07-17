@@ -17,6 +17,8 @@ import com.parse.SignUpCallback;
 public class SignupActivity extends AppCompatActivity {
 
     public static final String TAG = "Signup Activity";
+
+    // Items on the activity_signup.xml layout
     private EditText etUsername;
     private EditText etPassword;
     private Button btnSignup;
@@ -31,6 +33,7 @@ public class SignupActivity extends AppCompatActivity {
             goToMainActivity();
         }
 
+        // Initialization of each layout item
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
 
@@ -38,7 +41,7 @@ public class SignupActivity extends AppCompatActivity {
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "onClick login button");
+                Log.i(TAG, "Login button clicked");
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
                 signupUser(username, password);
@@ -58,9 +61,10 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
+                    // TODO: Better error handling to let user know the problem
                     Log.e(TAG, "Issue with sign up", e);
                     return;
-                } else {
+                } else { // Sign up was successful, now log in the user.
                     loginUser(username, password);
                 }
             }
@@ -77,7 +81,7 @@ public class SignupActivity extends AppCompatActivity {
                     Log.e(TAG, "Issue with login", e);
                     return;
                 } else {
-                    goToMainActivity();
+                    goToMainActivity(); // Should this method just be put into this else???
                 }
             }
         });

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="0dp"
     android:orientation="vertical"
-    tools:context=".SignupActivity">
+    tools:context=".SignupActivity" >
 
     <ImageView
         android:id="@+id/igLogo"
@@ -19,7 +19,8 @@
         android:src="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <EditText
         android:id="@+id/etUsername"
@@ -36,7 +37,8 @@
         android:layout_weight="1"
         android:background="@drawable/textbox_border"
         android:ems="10"
-        android:hint="Phone number, username, or email" />
+        android:hint="Create a username"
+        />
 
     <EditText
         android:id="@+id/etPassword"
@@ -53,8 +55,9 @@
         android:background="@drawable/textbox_border"
         android:layout_weight="1"
         android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword" />
+        android:hint="Create a password"
+        android:inputType="textPassword"
+        />
 
     <Button
         android:id="@+id/btnSignup"
@@ -68,9 +71,8 @@
         android:layout_marginEnd="15dp"
         android:layout_weight="1"
         android:text="Sign Up"
-        android:background="#405DE6"
+        android:background="@color/colorPrimary"
         android:textColor="@color/colorAccent"
         />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
