@@ -12,32 +12,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
+public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ViewHolder> {
 
     private Context context;
-    private List<RestaurantItem> restaurants;
+    private List<ReservationItem> reservations;
 
-    public RestaurantsAdapter(Context context, List<RestaurantItem> restaurants) {
+    public ReservationAdapter(Context context, List<ReservationItem> reservations) {
         this.context = context;
-        this.restaurants = restaurants;
+        this.reservations = reservations;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_restaurant, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_reservation, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RestaurantsAdapter.ViewHolder holder, int position) {
-        RestaurantItem restaurantItem = restaurants.get(position);
-        holder.bind(restaurantItem);
+    public void onBindViewHolder(@NonNull ReservationAdapter.ViewHolder holder, int position) {
+        ReservationItem reservationItem = reservations.get(position);
+        holder.bind(reservationItem);
     }
 
     @Override
     public int getItemCount() {
-        return restaurants.size();
+        return reservations.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -48,7 +48,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             itemview.setOnClickListener(this);
         }
 
-        public void bind(RestaurantItem restaurantItem) {
+        public void bind(ReservationItem reservationItem) {
 
         }
 
@@ -59,7 +59,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             // Ensure the position is valid (exists in the view)
             if (position != RecyclerView.NO_POSITION) {
                 // Won't work if class is static
-                RestaurantItem restaurantItem = restaurants.get(position);
+                ReservationItem reservationItem = reservations.get(position);
                 // Create intent for the new activity
                 Intent intent = new Intent(context, RestaurantDetail.class);
                 // Serialize the movie using parceler
