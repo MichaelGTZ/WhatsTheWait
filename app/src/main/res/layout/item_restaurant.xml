@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/ivRestaurantPic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         android:layout_margin="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,6 +30,7 @@
     <RatingBar
         android:id="@+id/rbRating"
         style="@style/Widget.AppCompat.RatingBar.Small"
+        android:progressTint="#F4D03F"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -52,7 +53,7 @@
         tools:text="773" />
 
     <TextView
-        android:id="@+id/tvAddress"
+        android:id="@+id/tvArea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -89,12 +90,13 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="3dp"
         app:layout_constraintStart_toEndOf="@id/ivRestaurantPic"
-        app:layout_constraintTop_toBottomOf="@id/tvAddress"
+        app:layout_constraintTop_toBottomOf="@id/tvArea"
         tools:text="Open until 9:00 PM" />
 
     <RatingBar
         android:id="@+id/rbPrice"
         style="@style/Widget.AppCompat.RatingBar.Small"
+        android:progressTint="#2ECC71"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
@@ -110,29 +112,32 @@
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="5dp"
         android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
         android:background="#FFFFFF"
+        android:text="Dine In"
         android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@id/bottomLine"
-        app:layout_constraintStart_toEndOf="@id/ivRestaurantPic"
         app:layout_constraintEnd_toStartOf="@+id/btnCarryOut"
+        app:layout_constraintStart_toEndOf="@id/ivRestaurantPic"
+        app:layout_constraintTop_toTopOf="@id/btnCarryOut"
         tools:text="Dine In" />
 
     <Button
         android:id="@+id/btnCarryOut"
         android:layout_width="0dp"
         android:layout_height="35dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:background="#FFFFFF"
+        android:text="Carry Out"
         android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@id/bottomLine"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rbPrice"
         app:layout_constraintStart_toEndOf="@id/btnDineIn"
+        app:layout_constraintTop_toBottomOf="@id/rbPrice"
         tools:text="Carry Out" />
 
     <View

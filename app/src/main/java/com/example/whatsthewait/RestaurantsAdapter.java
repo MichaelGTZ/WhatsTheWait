@@ -6,13 +6,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
+
+    private static final String TAG = "Restaurant Adapter";
 
     private Context context;
     private List<RestaurantItem> restaurants;
@@ -42,20 +50,45 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        private ImageView ivRestaurantPic;
+        private TextView tvRestaurantName;
+        private RatingBar rbRating;
+        private TextView tvRatingCount;
+        private TextView tvArea;
+        private TextView tvDistance;
+        private TextView tvHours;
+        private RatingBar rbPrice;
+
         public ViewHolder(@NonNull View itemview) {
             super(itemview);
+
+            ivRestaurantPic = itemview.findViewById(R.id.ivRestaurantPic);
+            tvRestaurantName = itemview.findViewById(R.id.tvRestaurantName);
+            rbRating = itemview.findViewById(R.id.rbRating);
+            tvRatingCount = itemview.findViewById(R.id.tvRatingCount);
+            tvArea = itemview.findViewById(R.id.tvArea);
+            tvDistance = itemview.findViewById(R.id.tvDistance);
+            tvHours = itemview.findViewById(R.id.tvHours);
+            rbPrice = itemview.findViewById(R.id.rbPrice);
 
             itemview.setOnClickListener(this);
         }
 
         public void bind(RestaurantItem restaurantItem) {
-
+            Glide.with(context).load(R.drawable.ic_launcher_background).into(ivRestaurantPic);
+            tvRestaurantName.setText("McDonalds");
+            rbRating.setRating(4);
+            tvRatingCount.setText("773");
+            tvArea.setText("Albuquerque");
+            tvDistance.setText("900 mi");
+            tvHours.setText("Open until 9:00 PM");
+            rbPrice.setRating(2);
         }
 
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            Log.i("PostsAdapter", "onClick: post clicked");
+            Log.i(TAG, "onClick: restaurant item clicked");
             // Ensure the position is valid (exists in the view)
             if (position != RecyclerView.NO_POSITION) {
                 // Won't work if class is static
