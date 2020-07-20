@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rvRestaurants = view.findViewById(R.id.rvPosts);
+        rvRestaurants = view.findViewById(R.id.rvRestaurants);
 
         allRestaurants = new ArrayList<>();
         adapter = new RestaurantsAdapter(getContext(), allRestaurants);
