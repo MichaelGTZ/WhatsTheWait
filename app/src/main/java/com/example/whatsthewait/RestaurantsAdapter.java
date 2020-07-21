@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -58,6 +57,8 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         private TextView tvDistance;
         private TextView tvHours;
         private RatingBar rbPrice;
+        private ImageView ivFavorite;
+        private boolean isFavoriteClicked;
 
         public ViewHolder(@NonNull View itemview) {
             super(itemview);
@@ -70,6 +71,21 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             tvDistance = itemview.findViewById(R.id.tvDistance);
             tvHours = itemview.findViewById(R.id.tvHours);
             rbPrice = itemview.findViewById(R.id.rbPrice);
+
+            ivFavorite = itemview.findViewById(R.id.ivFavorite);
+            ivFavorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (isFavoriteClicked == false) {
+                        Glide.with(context).load(R.drawable.favorite_selected).into(ivFavorite);
+                        isFavoriteClicked = true;
+                    } else {
+                        Glide.with(context).load(R.drawable.favorite_unselected).into(ivFavorite);
+                        isFavoriteClicked = false;
+                    }
+                    Log.i("OnClick", "isFavorited? " + isFavoriteClicked);
+                }
+            });
 
             itemview.setOnClickListener(this);
         }
@@ -97,6 +113,9 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                 Intent intent = new Intent(context, RestaurantDetail.class);
                 // Serialize the movie using parceler
                 //intent.putExtra(RestaurantItem.class.getSimpleName(), Parcels.wrap(post));
+                // Let new activity know if restaurant is favorited
+                Log.i("BeforeRestaurantDetail", "isFavorited? " + isFavoriteClicked);
+                intent.putExtra("isFavorited", isFavoriteClicked);
                 // Show activity
                 context.startActivity(intent);
             }

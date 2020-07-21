@@ -11,14 +11,18 @@ import com.bumptech.glide.Glide;
 public class RestaurantDetail extends AppCompatActivity {
 
     private ImageView ivFavorite; // Best way to handle this going back and forth between detailed view and RV? Maybe constantly change the user's fav list or wait till they navigate away to update.
-    boolean isFavoriteClicked = false; // Can this be tied to the data passed in via the change in activities?
+    protected boolean isFavoriteClicked; // Can this be tied to the data passed in via the change in activities?
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_detail);
 
+        isFavoriteClicked = getIntent().getBooleanExtra("isFavorited", true);
         ivFavorite = findViewById(R.id.ivFavorite);
+        if (isFavoriteClicked == true) {
+            Glide.with(getApplicationContext()).load(R.drawable.favorite_selected).into(ivFavorite);
+        }
         ivFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
