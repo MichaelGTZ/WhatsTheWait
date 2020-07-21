@@ -52,38 +52,41 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
+        android:progressTint="#F4D03F"
         android:numStars="5"
         android:stepSize=".1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRestaurantName"
-        />
-
-    <RatingBar
-        android:id="@+id/rbPrice"
-        style="@style/Widget.AppCompat.RatingBar.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
-        android:layout_marginTop="3dp"
-        android:numStars="4"
-        android:stepSize="1"
-        app:layout_constraintBottom_toBottomOf="@id/rbRating"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/rbRating"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvRestaurantName" />
 
     <TextView
         android:id="@+id/tvRatingCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:textSize="24sp"
-        android:layout_marginTop="2dp"
+        android:layout_marginStart="5dp"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/rbRating"
         app:layout_constraintTop_toTopOf="@id/rbRating"
         app:layout_constraintBottom_toBottomOf="@id/rbRating"
         tools:text="773"
         />
+
+    <RatingBar
+        android:id="@+id/rbPrice"
+        style="@style/PriceRatingBar"
+        android:scaleX=".6"
+        android:scaleY=".6"
+        android:transformPivotX="170dp"
+        android:transformPivotY="18dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="18dp"
+        android:numStars="4"
+        android:rating="2"
+        android:stepSize="1"
+        app:layout_constraintBottom_toBottomOf="@id/rbRating"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rbRating" />
 
     <TextView
         android:id="@+id/tvAddress"

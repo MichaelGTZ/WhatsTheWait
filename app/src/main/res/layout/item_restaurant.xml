@@ -95,7 +95,7 @@
 
     <RatingBar
         android:id="@+id/rbPrice"
-        style="@style/RatingBarSmall"
+        style="@style/PriceRatingBar"
         android:scaleX=".25"
         android:scaleY=".25"
         android:transformPivotX="160dp"
