@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/ivRestaurantPic"
         android:layout_width="125dp"
-        android:layout_height="125dp"
+        android:layout_height="137dp"
         android:layout_margin="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/tvRestaurantName"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:textColor="@color/colorPrimary"
@@ -26,6 +26,16 @@
         app:layout_constraintStart_toEndOf="@id/ivRestaurantPic"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Restaurant Name" />
+
+    <ImageView
+        android:id="@+id/ivFavorite"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvRestaurantName"
+        app:srcCompat="@drawable/favorite_unselected" />
 
     <RatingBar
         android:id="@+id/rbRating"
@@ -140,7 +150,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottomLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btnDineIn"
-        app:layout_constraintTop_toBottomOf="@id/rbPrice"
+        app:layout_constraintTop_toBottomOf="@id/tvHours"
         tools:text="Carry Out" />
 
     <View
