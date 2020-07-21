@@ -77,7 +77,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         public void bind(RestaurantItem restaurantItem) {
             Glide.with(context).load(R.drawable.ic_launcher_background).into(ivRestaurantPic);
             tvRestaurantName.setText("McDonalds");
-            rbRating.setRating(4);
+            rbRating.setRating(2);
             tvRatingCount.setText("773");
             tvArea.setText("Albuquerque");
             tvDistance.setText("900 mi");

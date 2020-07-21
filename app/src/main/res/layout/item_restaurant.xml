@@ -95,12 +95,15 @@
 
     <RatingBar
         android:id="@+id/rbPrice"
-        style="@style/Widget.AppCompat.RatingBar.Small"
-        android:progressTint="#2ECC71"
+        style="@style/RatingBarSmall"
+        android:scaleX=".25"
+        android:scaleY=".25"
+        android:transformPivotX="160dp"
+        android:transformPivotY="21dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
         android:layout_marginTop="3dp"
+        android:layout_marginEnd="10dp"
         android:numStars="4"
         android:stepSize="1"
         app:layout_constraintBottom_toBottomOf="@id/tvHours"
