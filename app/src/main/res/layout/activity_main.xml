@@ -23,6 +23,7 @@
         android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@android:color/white"
         app:menu="@menu/menu_bottom_navigation"
         />
 
