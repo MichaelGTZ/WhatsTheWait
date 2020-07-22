@@ -1,13 +1,13 @@
 package com.example.whatsthewait;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.ToggleButton;
 
-import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
 
 public class RestaurantDetail extends AppCompatActivity {
 
@@ -20,22 +20,16 @@ public class RestaurantDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_detail);
 
-        isFavoriteClicked = getIntent().getBooleanExtra("isFavorited", true);
-        ivFavorite = findViewById(R.id.ivFavorite);
-        if (isFavoriteClicked == true) {
-            Glide.with(getApplicationContext()).load(R.drawable.favorite_selected).into(ivFavorite);
-        }
-        ivFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isFavoriteClicked == false) {
-                    Glide.with(getApplicationContext()).load(R.drawable.favorite_unselected).into(ivFavorite);
-                    isFavoriteClicked = true;
-                } else {
-                    Glide.with(getApplicationContext()).load(R.drawable.favorite_selected).into(ivFavorite);
-                    isFavoriteClicked = false;
-                }
-            }
-        });
+        tbFavorite = findViewById(R.id.tbFavorite);
+        ivBackButton = findViewById(R.id.ivBackButton);
+
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new RestaurantDetailFragmentPagerAdapter(getSupportFragmentManager(),
+                RestaurantDetail.this));
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = findViewById(R.id.slidingTabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 }

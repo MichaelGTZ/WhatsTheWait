@@ -188,34 +188,36 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/center_restaurant_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/UpperLine"
-        app:menu="@menu/center_restaurant_navigation"
-        />
-
-    <View
-        android:id="@+id/LowerLine"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginTop="10dp"
-        android:background="#A9A9A9"
-        app:layout_constraintTop_toBottomOf="@id/center_restaurant_navigation"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <FrameLayout
-        android:id="@+id/flContainer"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/LowerLine"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/UpperLine"
+        app:layout_constraintBottom_toBottomOf="parent" >
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/slidingTabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:id="@+id/LowerLine"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#A9A9A9"
+            app:layout_constraintTop_toBottomOf="@id/slidingTabs"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/white" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
