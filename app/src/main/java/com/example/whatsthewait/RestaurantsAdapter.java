@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
@@ -99,10 +101,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                 // Create intent for the new activity
                 Intent intent = new Intent(context, RestaurantDetail.class);
                 // Serialize the movie using parceler
-                //intent.putExtra(RestaurantItem.class.getSimpleName(), Parcels.wrap(post));
-                // Let new activity know if restaurant is favorited
-                Log.i("BeforeRestaurantDetail", "isFavorited? " + isFavoriteClicked);
-                intent.putExtra("isFavorited", isFavoriteClicked);
+                intent.putExtra(RestaurantItem.class.getSimpleName(), Parcels.wrap(restaurantItem));
                 // Show activity
                 context.startActivity(intent);
             }
