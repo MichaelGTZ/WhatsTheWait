@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ public class ProfileFragment extends Fragment {
 
     // Items on the fragment_profile.xml layout
     private ImageView ivProfilePic;
+    private TextView tvUsername;
     private Button btnLogout;
 
     // For using camera to take and set profile picture
@@ -55,7 +57,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragments_profile, container, false);
+        return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
     @Override
@@ -84,12 +86,15 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        tvUsername = view.findViewById(R.id.tvUsername);
+        tvUsername.setText(currentUser.getUsername());
+
         btnLogout = view.findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "onClick log out button");
-                logoutUser(); // Should this method be typed out here?
+                logoutUser();
             }
         });
     }
@@ -183,7 +188,6 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
-
 
     private void logoutUser() {
         ParseUser.logOut();
