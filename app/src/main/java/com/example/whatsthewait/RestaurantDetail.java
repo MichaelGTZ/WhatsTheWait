@@ -5,13 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 
 public class RestaurantDetail extends AppCompatActivity {
 
-    private ImageView ivFavorite; // Best way to handle this going back and forth between detailed view and RV? Maybe constantly change the user's fav list or wait till they navigate away to update.
-    protected boolean isFavoriteClicked; // Can this be tied to the data passed in via the change in activities?
+    private ToggleButton tbFavorite;
+    private ImageView ivBackButton;
+    private RestaurantItem restaurantItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

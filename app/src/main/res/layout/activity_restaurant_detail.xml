@@ -17,15 +17,17 @@
         app:srcCompat="@drawable/backarrow"
         />
 
-    <ImageView
-        android:id="@+id/ivFavorite"
+    <ToggleButton
+        android:id="@+id/tbFavorite"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/favorite_unselected"
+        android:background="@drawable/selector_toggle_favorite"
+        android:textOff=""
+        android:textOn=""
         />
 
     <TextView
@@ -156,7 +158,7 @@
         app:layout_constraintStart_toEndOf="@id/tvCuisine"
         app:layout_constraintTop_toBottomOf="@id/tvHours"
         app:layout_constraintEnd_toStartOf="@id/tvBookCarryOut"
-        tools:text="Dine In"
+        android:text="Dine In"
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
         android:textSize="18dp"
@@ -170,7 +172,7 @@
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvHours"
-        tools:text="Carry Out"
+        android:text="Carry Out"
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
         android:textSize="18dp"

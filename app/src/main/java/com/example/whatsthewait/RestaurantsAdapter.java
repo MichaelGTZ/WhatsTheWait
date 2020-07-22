@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,8 +58,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         private TextView tvDistance;
         private TextView tvHours;
         private RatingBar rbPrice;
-        private ImageView ivFavorite;
-        private boolean isFavoriteClicked;
+        private ToggleButton tbFavorite;
 
         public ViewHolder(@NonNull View itemview) {
             super(itemview);
@@ -72,20 +72,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             tvHours = itemview.findViewById(R.id.tvHours);
             rbPrice = itemview.findViewById(R.id.rbPrice);
 
-            ivFavorite = itemview.findViewById(R.id.ivFavorite);
-            ivFavorite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (isFavoriteClicked == false) {
-                        Glide.with(context).load(R.drawable.favorite_selected).into(ivFavorite);
-                        isFavoriteClicked = true;
-                    } else {
-                        Glide.with(context).load(R.drawable.favorite_unselected).into(ivFavorite);
-                        isFavoriteClicked = false;
-                    }
-                    Log.i("OnClick", "isFavorited? " + isFavoriteClicked);
-                }
-            });
+            tbFavorite = itemview.findViewById(R.id.tbFavorite);
 
             itemview.setOnClickListener(this);
         }
