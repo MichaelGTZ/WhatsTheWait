@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +43,10 @@ public class ProfileFragment extends Fragment {
     // Items on the fragment_profile.xml layout
     private ImageView ivProfilePic;
     private TextView tvUsername;
-    private Button btnLogout;
+    private TextView tvChangeProfilePic;
+    private EditText etChangeUsername;
+    private EditText etChangePassword;
+    private TextView tvLogOut;
 
     // For using camera to take and set profile picture
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1134;
@@ -79,18 +82,24 @@ public class ProfileFragment extends Fragment {
         } else {
             ivProfilePic.setImageDrawable(getResources().getDrawable(R.drawable.user_unselected));
         }
-        ivProfilePic.setOnClickListener(new View.OnClickListener() {
+
+        tvUsername = view.findViewById(R.id.tvUsername);
+        tvUsername.setText(currentUser.getUsername());
+
+        tvChangeProfilePic = view.findViewById(R.id.tvChangeProfilePic);
+        tvChangeProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchCamera(view);
             }
         });
 
-        tvUsername = view.findViewById(R.id.tvUsername);
-        tvUsername.setText(currentUser.getUsername());
+        etChangeUsername = view.findViewById(R.id.etChangeUsername);
 
-        btnLogout = view.findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+        etChangePassword = view.findViewById(R.id.etChangePassword);
+
+        tvLogOut = view.findViewById(R.id.tvLogOut);
+        tvLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "onClick log out button");
