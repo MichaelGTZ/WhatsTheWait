@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.whatsthewait.models.Business;
 
 import org.parceler.Parcels;
 
@@ -25,9 +26,9 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
     private static final String TAG = "Restaurant Adapter";
 
     private Context context;
-    private List<RestaurantItem> restaurants;
+    private List<Business> restaurants;
 
-    public RestaurantsAdapter(Context context, List<RestaurantItem> restaurants) {
+    public RestaurantsAdapter(Context context, List<Business> restaurants) {
         this.context = context;
         this.restaurants = restaurants;
     }
@@ -41,7 +42,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantsAdapter.ViewHolder holder, int position) {
-        RestaurantItem restaurantItem = restaurants.get(position);
+        Business restaurantItem = restaurants.get(position);
         holder.bind(restaurantItem);
     }
 
@@ -61,6 +62,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         private TextView tvHours;
         private RatingBar rbPrice;
         private ToggleButton tbFavorite;
+        private TextView tvCuisine;
 
         public ViewHolder(@NonNull View itemview) {
             super(itemview);
@@ -76,18 +78,21 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
 
             tbFavorite = itemview.findViewById(R.id.tbFavorite);
 
+            tvCuisine = itemview.findViewById(R.id.tvCuisine);
+
             itemview.setOnClickListener(this);
         }
 
-        public void bind(RestaurantItem restaurantItem) {
-            Glide.with(context).load(R.drawable.ic_launcher_background).into(ivRestaurantPic);
-            tvRestaurantName.setText("McDonalds");
-            rbRating.setRating(2);
-            tvRatingCount.setText("773");
-            tvArea.setText("Albuquerque");
-            tvDistance.setText("900 mi");
+        public void bind(Business restaurantItem) {
+            Glide.with(context).load(restaurantItem.getImageUrl()).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_foreground).into(ivRestaurantPic);
+            tvRestaurantName.setText(restaurantItem.getName());
+            rbRating.setRating(restaurantItem.getRating());
+            tvRatingCount.setText(String.format("%d",restaurantItem.getReviewCount()));
+            tvArea.setText(restaurantItem.getLocation().getAddress1());
+            tvDistance.setText(restaurantItem.displayDistance());
             tvHours.setText("Open until 9:00 PM");
-            rbPrice.setRating(2);
+            rbPrice.setRating(restaurantItem.getRating());
+            tvCuisine.setText(restaurantItem.getCategories().get(0).getTitle());
         }
 
         @Override
@@ -97,7 +102,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             // Ensure the position is valid (exists in the view)
             if (position != RecyclerView.NO_POSITION) {
                 // Won't work if class is static
-                RestaurantItem restaurantItem = restaurants.get(position);
+                Business restaurantItem = restaurants.get(position);
                 // Create intent for the new activity
                 Intent intent = new Intent(context, RestaurantDetail.class);
                 // Serialize the movie using parceler
