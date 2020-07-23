@@ -130,16 +130,6 @@
             android:text="Log Out"
             />
 
-        <TextView
-            android:id="@+id/tvPickNewProfilePic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pick from gallery"
-            android:layout_margin="30dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvLogOut"
-            />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

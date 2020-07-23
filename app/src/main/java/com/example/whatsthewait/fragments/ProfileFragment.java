@@ -1,5 +1,6 @@
 package com.example.whatsthewait.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,7 +11,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -49,7 +52,6 @@ public class ProfileFragment extends Fragment {
     private EditText etChangeUsername;
     private EditText etChangePassword;
     private TextView tvLogOut;
-    private TextView tvPickNewProfilePic;
 
     // For using camera to take and set profile picture
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1134;
@@ -93,18 +95,12 @@ public class ProfileFragment extends Fragment {
         tvUsername.setText(currentUser.getUsername());
 
         tvChangeProfilePic = view.findViewById(R.id.tvChangeProfilePic);
+        registerForContextMenu(tvChangeProfilePic);
+
         tvChangeProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchCamera(view);
-            }
-        });
-
-        tvPickNewProfilePic = view.findViewById(R.id.tvPickNewProfilePic);
-        tvPickNewProfilePic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onPickPhoto(view);
+                tvChangeProfilePic.showContextMenu();
             }
         });
 
@@ -120,6 +116,31 @@ public class ProfileFragment extends Fragment {
                 logoutUser();
             }
         });
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        ((Activity) getContext()).getMenuInflater().inflate(R.menu.set_profile_picture, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.takePhoto:
+                launchCamera(getView());
+                return true;
+            case R.id.chooseFromLibrary:
+                onPickPhoto(getView());
+                return true;
+            case R.id.removeCurrentPhoto:
+                Toast.makeText(getContext(), "Remove photo selected", Toast.LENGTH_SHORT).show(); // Change to actually remove photo from preview and from parse
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     public void launchCamera(View view) {
