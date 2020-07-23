@@ -3,7 +3,9 @@ package com.example.whatsthewait.fragments;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -47,12 +49,16 @@ public class ProfileFragment extends Fragment {
     private EditText etChangeUsername;
     private EditText etChangePassword;
     private TextView tvLogOut;
+    private TextView tvPickNewProfilePic;
 
     // For using camera to take and set profile picture
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1134;
     public String profilePhotoFileName = "profile_%d.jpg";
     private File profilePicFile;
     private Bitmap resizedProfilePicBitmap;
+
+    // For picking a profile picture from gallery
+    public final static int PICK_PHOTO_CODE = 1136;
 
     public ProfileFragment() {}
 
@@ -94,6 +100,14 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        tvPickNewProfilePic = view.findViewById(R.id.tvPickNewProfilePic);
+        tvPickNewProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onPickPhoto(view);
+            }
+        });
+
         etChangeUsername = view.findViewById(R.id.etChangeUsername);
 
         etChangePassword = view.findViewById(R.id.etChangePassword);
@@ -128,20 +142,18 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    // Returns the File for a photo stored on disk given the fileName
-    public File getPhotoFileUri(String fileName) {
-        // Get safe storage directory for photos
-        // Use `getExternalFilesDir` on Context to access package-specific directories.
-        // This way, we don't need to request external read/write runtime permissions.
-        File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
+    // Trigger gallery selection for a photo
+    public void onPickPhoto(View view) {
+        // Create intent for picking a photo from the gallery
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
-            Log.d(TAG, "failed to create directory");
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        // So as long as the result is not null, it's safe to use the intent.
+        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+            // Bring up gallery to select a photo
+            startActivityForResult(intent, PICK_PHOTO_CODE);
         }
-
-        // Return the file target for the photo based on filename
-        return new File(mediaStorageDir.getPath() + File.separator + fileName);
     }
 
     @Override
@@ -160,6 +172,16 @@ public class ProfileFragment extends Fragment {
                 //ivProfilePic.setImageBitmap(rawTakenImage);
             } else { // Result was a failure
                 Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if ((data != null) && requestCode == PICK_PHOTO_CODE) {
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            Uri photoUri = data.getData();
+            profilePicFile = new File(String.valueOf(photoUri));
+            try {
+                savePickedProfilePic(currentUser, profilePicFile, photoUri);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -193,9 +215,77 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(getContext(), "Error while saving", Toast.LENGTH_SHORT);
                 }
                 Log.i(TAG, "Post save was successful");
+                // Load the selected image into a preview
                 ivProfilePic.setImageBitmap(resizedProfilePicBitmap);
             }
         });
+    }
+
+    private void savePickedProfilePic(ParseUser currentUser, File profilePicFile, Uri photoUri) throws IOException {
+        // Load the image located at photoUri into selectedImage
+        Bitmap selectedImage = loadFromUri(photoUri);
+        // See BitmapScaler.java: https://gist.github.com/nesquena/3885707fd3773c09f1bb
+        resizedProfilePicBitmap = BitmapScalar.scaleToFitWidth(selectedImage, 1080);
+        // Configure byte output stream
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        // Compress the image further
+        resizedProfilePicBitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+        // Create a new file for the resized bitmap (`getPhotoFileUri` defined above)
+        File resizedFile = getPhotoFileUri("resized2_" + profilePicFile.getName());
+        resizedFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(resizedFile);
+        // Write the bytes of the bitmap to file
+        fos.write(bytes.toByteArray());
+        fos.close();
+
+        currentUser.put("profilePicture", new ParseFile(resizedFile));
+
+        currentUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while saving", e);
+                    Toast.makeText(getContext(), "Error while saving", Toast.LENGTH_SHORT);
+                }
+                Log.i(TAG, "Post save was successful");
+                // Load the selected image into a preview
+                ivProfilePic.setImageBitmap(selectedImage);
+            }
+        });
+    }
+
+    // Returns the File for a photo stored on disk given the fileName
+    public File getPhotoFileUri(String fileName) {
+        // Get safe storage directory for photos
+        // Use `getExternalFilesDir` on Context to access package-specific directories.
+        // This way, we don't need to request external read/write runtime permissions.
+        File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
+            Log.d(TAG, "failed to create directory");
+        }
+
+        // Return the file target for the photo based on filename
+        return new File(mediaStorageDir.getPath() + File.separator + fileName);
+    }
+
+    public Bitmap loadFromUri(Uri photoUri) {
+        Bitmap image = null;
+        try {
+            // check version of Android on device
+            if(Build.VERSION.SDK_INT > 27){
+                // on newer versions of Android, use the new decodeBitmap method
+                ImageDecoder.Source source = ImageDecoder.createSource(getContext().getContentResolver(), photoUri);
+                image = ImageDecoder.decodeBitmap(source);
+            } else {
+                // support older versions of Android by using getBitmap
+                image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoUri);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
     }
 
     private void logoutUser() {
