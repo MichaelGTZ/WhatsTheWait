@@ -91,7 +91,11 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             tvArea.setText(restaurantItem.getLocation().getAddress1());
             tvDistance.setText(restaurantItem.displayDistance());
             tvHours.setText("Open until 9:00 PM");
-            rbPrice.setRating(restaurantItem.getRating());
+            if (restaurantItem.getPrice() != null) {
+                rbPrice.setRating(restaurantItem.getPrice().split("").length);
+            } else {
+                rbPrice.setRating(0);
+            }
             tvCuisine.setText(restaurantItem.getCategories().get(0).getTitle());
         }
 
