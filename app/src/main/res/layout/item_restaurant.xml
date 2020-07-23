@@ -97,14 +97,14 @@
         tools:text="900 mi" />
 
     <TextView
-        android:id="@+id/tvHours"
+        android:id="@+id/tvCuisine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="3dp"
         app:layout_constraintStart_toEndOf="@id/ivRestaurantPic"
         app:layout_constraintTop_toBottomOf="@id/tvArea"
-        tools:text="Open until 9:00 PM" />
+        tools:text="American" />
 
     <RatingBar
         android:id="@+id/rbPrice"
@@ -119,42 +119,19 @@
         android:layout_marginEnd="10dp"
         android:numStars="4"
         android:stepSize="1"
-        app:layout_constraintBottom_toBottomOf="@id/tvHours"
+        app:layout_constraintBottom_toBottomOf="@id/tvCuisine"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tvHours" />
+        app:layout_constraintTop_toTopOf="@id/tvCuisine" />
 
-    <Button
-        android:id="@+id/btnDineIn"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
+    <TextView
+        android:id="@+id/tvHours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="10dp"
-        android:background="#FFFFFF"
-        android:text="Dine In"
-        android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@id/bottomLine"
-        app:layout_constraintEnd_toStartOf="@+id/btnCarryOut"
+        android:layout_marginTop="3dp"
         app:layout_constraintStart_toEndOf="@id/ivRestaurantPic"
-        app:layout_constraintTop_toTopOf="@id/btnCarryOut"
-        tools:text="Dine In" />
-
-    <Button
-        android:id="@+id/btnCarryOut"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="#FFFFFF"
-        android:text="Carry Out"
-        android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@id/bottomLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnDineIn"
-        app:layout_constraintTop_toBottomOf="@id/tvHours"
-        tools:text="Carry Out" />
+        app:layout_constraintTop_toBottomOf="@id/tvCuisine"
+        tools:text="Open until 9:00 PM" />
 
     <View
         android:id="@+id/bottomLine"
