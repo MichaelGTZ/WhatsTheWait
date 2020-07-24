@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.whatsthewait.models.Business;
 
 import org.parceler.Parcels;
@@ -84,7 +87,12 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         }
 
         public void bind(Business restaurantItem) {
-            Glide.with(context).load(restaurantItem.getImageUrl()).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_foreground).into(ivRestaurantPic);
+            Glide.with(context)
+                    .load(restaurantItem.getImageUrl())
+                    .apply(new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(10)))
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .into(ivRestaurantPic);
             tvRestaurantName.setText(restaurantItem.getName());
             rbRating.setRating(restaurantItem.getRating());
             tvRatingCount.setText(String.format("%d",restaurantItem.getReviewCount()));
