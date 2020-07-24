@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WhatsTheWait</string>
+    <string name="yelp_base_url">https://api.yelp.com/v3/</string>
+    <string name="yelp_api_key">92GLy6q-r6QHXE5b3euQwNJ-WXx21-Ex9YIbyBN8L0cDrvQDejGiTQwr32EATnT3rxf-5kIAX9n6Rhix0YrmyzL6drOWkV16vwJv4_d3A01VaTopz_FD2xoRhCYXX3Yx</string>
 </resources>

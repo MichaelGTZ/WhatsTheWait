@@ -30,9 +30,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFragment extends Fragment {
 
-    public static final String BASE_URL = "https://api.yelp.com/v3/";
-    private static final String API_KEY = "92GLy6q-r6QHXE5b3euQwNJ-WXx21-Ex9YIbyBN8L0cDrvQDejGiTQwr32EATnT3rxf-5kIAX9n6Rhix0YrmyzL6drOWkV16vwJv4_d3A01VaTopz_FD2xoRhCYXX3Yx";
-
     public static final String TAG = "HomeFragment";
 
     private RecyclerView rvRestaurants;
@@ -59,12 +56,12 @@ public class HomeFragment extends Fragment {
         rvRestaurants.setLayoutManager(linearLayoutManager);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(getContext().getString(R.string.yelp_base_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         YelpService yelpService = retrofit.create(YelpService.class);
-        yelpService.searchRestaurants("Bearer " + API_KEY, "Burritos", "New Mexico").enqueue(new Callback<RestaurantSearchResult>() {
+        yelpService.searchRestaurants("Bearer " + getContext().getString(R.string.yelp_api_key), "Burritos", "New Mexico").enqueue(new Callback<RestaurantSearchResult>() {
             @Override
             public void onResponse(Call<RestaurantSearchResult> call, Response<RestaurantSearchResult> response) {
                 Log.i(TAG, "onResponse " + response.toString());
