@@ -5,11 +5,14 @@ import java.util.List;
 import com.example.whatsthewait.RestaurantItem;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
 
 import org.parceler.Parcel;
 
 @Parcel(analyze = {Business.class})
-public class Business {
+@ParseClassName("Restaurant")
+public class Business extends ParseObject {
 
     @SerializedName("rating")
     @Expose
@@ -56,6 +59,8 @@ public class Business {
     @SerializedName("transactions")
     @Expose
     private List<String> transactions = null;
+
+    public Business() {}
 
     public String displayDistance() {
         double milesPerMeter = 0.000621371;

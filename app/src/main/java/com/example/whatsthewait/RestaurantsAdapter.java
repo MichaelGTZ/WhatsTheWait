@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,9 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.whatsthewait.models.Business;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
@@ -80,6 +84,50 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             rbPrice = itemview.findViewById(R.id.rbPrice);
 
             tbFavorite = itemview.findViewById(R.id.tbFavorite);
+            tbFavorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ParseUser currentuser = ParseUser.getCurrentUser();
+                    int position = getAdapterPosition();
+                    Business favoritedRestaurant = null;
+                    if (position != RecyclerView.NO_POSITION) {
+                        // Won't work if class is static
+                        favoritedRestaurant = restaurants.get(position);
+                    }
+                    if (tbFavorite.isChecked()) {
+                        // Set the Parse Restaurant items info using a method in the Business class
+
+                        // Add item to favorites array
+                        favoritedRestaurant.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Log.i(TAG, "Restaurant item saved");
+                                } else {
+                                    Log.e(TAG, "Restaurant item failed to create", e);
+                                }
+                            }
+                        });
+                        currentuser.addUnique("favorites", favoritedRestaurant);
+                    } else {
+                        // Remove from favorites array
+//                        List<Business> currentFavs = currentuser.getList("favorites");
+//                        currentFavs.remove(favoritedRestaurant.getId());
+//                        currentuser.put("favorites", currentFavs);
+                    }
+                    // Save in background
+                    currentuser.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.i(TAG, "Favorites list updated successfully");
+                            } else {
+                                Log.e(TAG, "Favorites list failed to save", e);
+                            }
+                        }
+                    });
+                }
+            });
 
             tvCuisine = itemview.findViewById(R.id.tvCuisine);
 

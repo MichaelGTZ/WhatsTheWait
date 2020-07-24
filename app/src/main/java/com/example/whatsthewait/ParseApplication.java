@@ -2,6 +2,7 @@ package com.example.whatsthewait;
 
 import android.app.Application;
 
+import com.example.whatsthewait.models.Business;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -14,6 +15,7 @@ public class ParseApplication extends Application {
         // Register your Parse models
         ParseObject.registerSubclass(RestaurantItem.class);
         ParseObject.registerSubclass(ReservationItem.class);
+        ParseObject.registerSubclass(Business.class);
 
         // set applicationId, and server server based on the values in the Heroku settings.
         // clientKey is not needed unless explicitly configured
