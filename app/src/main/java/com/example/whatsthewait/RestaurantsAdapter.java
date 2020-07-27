@@ -93,7 +93,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             tbFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ParseUser currentuser = ParseUser.getCurrentUser();
+                    ParseUser currentUser = ParseUser.getCurrentUser();
                     int position = getAdapterPosition();
                     Business favoritedRestaurant = null;
                     if (position != RecyclerView.NO_POSITION) {
@@ -109,7 +109,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                             public void done(ParseException e) {
                                 if (e == null) {
                                     Log.i(TAG, "New restaurant item saved");
-                                    currentuser.saveInBackground(new SaveCallback() {
+                                    currentUser.saveInBackground(new SaveCallback() {
                                         @Override
                                         public void done(ParseException e) {
                                             if (e == null) {
@@ -125,11 +125,11 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                             }
                         });
                         // Add item to favorites relation and save
-                        ParseRelation<ParseObject> relation = currentuser.getRelation("favoritesRelation");
+                        ParseRelation<ParseObject> relation = currentUser.getRelation("favoritesRelation");
                         relation.add(favoritedRestaurant);
                     } else {
                         // Find the restaurant item that was just unfavorited and remove it from the relation
-                        ParseRelation<ParseObject> relation = currentuser.getRelation("favoritesRelation");
+                        ParseRelation<ParseObject> relation = currentUser.getRelation("favoritesRelation");
                         ParseQuery<ParseObject> query = relation.getQuery();
                         query.whereEqualTo("restaurantId", favoritedRestaurant.getId());
                         query.findInBackground(new FindCallback<ParseObject>() {
@@ -142,7 +142,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                                     relation.remove(objects.get(0)); // Will always be only one restaurant in the objects list
                                 }
                                 // Save the relation
-                                currentuser.saveInBackground(new SaveCallback() {
+                                currentUser.saveInBackground(new SaveCallback() {
                                     @Override
                                     public void done(ParseException e) {
                                         if (e == null) {
