@@ -68,6 +68,10 @@ public class Business extends ParseObject {
         return String.format("%s mi", distanceInMiles);
     }
 
+    public void setParseId() { put("restaurantId", getId()); }
+
+    public String getParseId() { return getString("restaurantId"); }
+
     public float getRating() {
         return rating;
     }

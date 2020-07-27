@@ -20,12 +20,18 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.whatsthewait.models.Business;
+import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.ViewHolder> {
@@ -95,37 +101,60 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                         favoritedRestaurant = restaurants.get(position);
                     }
                     if (tbFavorite.isChecked()) {
-                        // Set the Parse Restaurant items info using a method in the Business class
-
-                        // Add item to favorites array
+                        // Set the Parse Restaurant ID
+                        favoritedRestaurant.setParseId();
+                        // Save new restaurant item
                         favoritedRestaurant.saveInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
                                 if (e == null) {
-                                    Log.i(TAG, "Restaurant item saved");
+                                    Log.i(TAG, "New restaurant item saved");
+                                    currentuser.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if (e == null) {
+                                                Log.i(TAG, "Successfully added to favorites relation");
+                                            } else {
+                                                Log.e(TAG, "Favorites list failed to save", e);
+                                            }
+                                        }
+                                    });
                                 } else {
                                     Log.e(TAG, "Restaurant item failed to create", e);
                                 }
                             }
                         });
-                        currentuser.addUnique("favorites", favoritedRestaurant);
+                        // Add item to favorites relation and save
+                        ParseRelation<ParseObject> relation = currentuser.getRelation("favoritesRelation");
+                        relation.add(favoritedRestaurant);
                     } else {
-                        // Remove from favorites array
-//                        List<Business> currentFavs = currentuser.getList("favorites");
-//                        currentFavs.remove(favoritedRestaurant.getId());
-//                        currentuser.put("favorites", currentFavs);
-                    }
-                    // Save in background
-                    currentuser.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Log.i(TAG, "Favorites list updated successfully");
-                            } else {
-                                Log.e(TAG, "Favorites list failed to save", e);
+                        // Find the restaurant item that was just unfavorited and remove it from the relation
+                        ParseRelation<ParseObject> relation = currentuser.getRelation("favoritesRelation");
+                        ParseQuery<ParseObject> query = relation.getQuery();
+                        query.whereEqualTo("restaurantId", favoritedRestaurant.getId());
+                        query.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> objects, ParseException e) {
+                                if (e != null) {
+                                    Log.e(TAG, "Error finding restaurant item", e);
+                                } else {
+                                    Log.i(TAG, "Successfully found matching restaurant:  " + objects.toString());
+                                    relation.remove(objects.get(0)); // Will always be only one restaurant in the objects list
+                                }
+                                // Save the relation
+                                currentuser.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e == null) {
+                                            Log.i(TAG, "Successfully removed from favorites relation");
+                                        } else {
+                                            Log.e(TAG, "Favorites list failed to save", e);
+                                        }
+                                    }
+                                });
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             });
 
@@ -153,6 +182,27 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                 rbPrice.setRating(0);
             }
             tvCuisine.setText(restaurantItem.getCategories().get(0).getTitle());
+
+            // Check if the restaurant is a favorite and fill in the heart if needed
+            ParseUser currentuser = ParseUser.getCurrentUser();
+            ParseRelation<ParseObject> relation = currentuser.getRelation("favoritesRelation");
+            ParseQuery<ParseObject> query = relation.getQuery();
+            query.whereEqualTo("restaurantId", restaurantItem.getId());
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if (e != null) {
+                        Log.e(TAG, "On Bind: Error finding restaurant item", e);
+                    } else {
+                        Log.i(TAG, "On Bind: Successfully found matching restaurant:  " + objects.toString());
+                        if (objects.isEmpty()) {
+                            tbFavorite.setChecked(false);
+                        } else {
+                            tbFavorite.setChecked(true);
+                        }
+                    }
+                }
+            });
         }
 
         @Override
