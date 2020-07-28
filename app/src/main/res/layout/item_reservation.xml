@@ -20,6 +20,47 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Restaurant Name" />
 
+    <ImageView
+        android:id="@+id/ivCancelReservation"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvRestaurantName"
+        android:layout_marginEnd="10dp"
+        app:srcCompat="@drawable/x_close"
+        />
+
+    <TextView
+        android:id="@+id/tvArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRestaurantName"
+        tools:text="Albuquerque" />
+
+    <ImageView
+        android:id="@+id/ivDistance"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginEnd="3dp"
+        app:layout_constraintEnd_toStartOf="@+id/tvDistance"
+        app:layout_constraintTop_toTopOf="@id/tvDistance"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDistance"
+        app:srcCompat="@drawable/location" />
+
+    <TextView
+        android:id="@+id/tvDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRestaurantName"
+        tools:text="900 mi" />
+
     <TextView
         android:id="@+id/tvReservationDate"
         android:layout_width="wrap_content"
@@ -29,7 +70,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="3dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvRestaurantName"
+        app:layout_constraintTop_toBottomOf="@id/tvArea"
         tools:text="September 20th at 7:00 PM" />
 
     <ImageView
@@ -52,45 +93,9 @@
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvRestaurantName"
+        app:layout_constraintTop_toTopOf="@id/tvReservationDate"
+        app:layout_constraintBottom_toBottomOf="@id/tvReservationDate"
         tools:text="3" />
-
-    <Button
-        android:id="@+id/btnMenu"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_margin="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvReservationDate"
-        app:layout_constraintBottom_toTopOf="@id/bottomLine"
-        app:layout_constraintEnd_toStartOf="@id/btnEdit"
-        android:background="@drawable/textbox_border"
-        android:text="Menu"
-        />
-
-    <Button
-        android:id="@+id/btnEdit"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_margin="10dp"
-        app:layout_constraintStart_toEndOf="@id/btnMenu"
-        app:layout_constraintEnd_toStartOf="@id/btnCancel"
-        app:layout_constraintTop_toBottomOf="@id/tvReservationDate"
-        android:background="@drawable/textbox_border"
-        android:text="Edit"
-        />
-
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_margin="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvReservationDate"
-        app:layout_constraintStart_toEndOf="@+id/btnEdit"
-        android:background="@drawable/textbox_border"
-        android:text="Cancel"
-        />
 
     <View
         android:id="@+id/bottomLine"
@@ -98,6 +103,7 @@
         android:layout_height="1px"
         android:layout_marginTop="10dp"
         android:background="#A9A9A9"
+        app:layout_constraintTop_toBottomOf="@id/tvReservationDate"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
