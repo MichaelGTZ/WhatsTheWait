@@ -8,14 +8,13 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.whatsthewait.fragments.DineInFragment;
 import com.example.whatsthewait.fragments.InfoFragment;
-import com.example.whatsthewait.fragments.MenuFragment;
 import com.example.whatsthewait.fragments.ReviewsFragment;
 import com.example.whatsthewait.fragments.ToGoFragment;
 
 public class RestaurantDetailFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    final int PAGE_COUNT = 5;
-    private String tabTitles[] = new String[] { "Info", "Menu", "Dine In", "To Go", "Reviews" };
+    final int PAGE_COUNT = 4;
+    private String tabTitles[] = new String[] { "Info", "Dine In", "To Go", "Reviews" };
     private Context context;
 
     public RestaurantDetailFragmentPagerAdapter (FragmentManager fm, Context context) {
@@ -34,12 +33,10 @@ public class RestaurantDetailFragmentPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return InfoFragment.newInstance(position + 1);
             case 1:
-                return MenuFragment.newInstance(position + 1);
-            case 2:
                 return DineInFragment.newInstance(position + 1);
-            case 3:
+            case 2:
                 return ToGoFragment.newInstance(position + 1);
-            case 4:
+            case 3:
                 return ReviewsFragment.newInstance(position + 1);
             default:
                 return null;
