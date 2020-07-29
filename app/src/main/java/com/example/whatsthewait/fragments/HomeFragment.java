@@ -72,6 +72,7 @@ public class HomeFragment extends Fragment {
                     Log.i(TAG, "Did not receive a valid response body from Yelp API... exiting");
                     return;
                 }
+                allRestaurants.clear();
                 allRestaurants.addAll(body.getBusinesses());
                 adapter.notifyDataSetChanged();
             }
