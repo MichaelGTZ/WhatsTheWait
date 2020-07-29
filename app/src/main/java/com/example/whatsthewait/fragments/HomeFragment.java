@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +36,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView rvRestaurants;
     private RestaurantsAdapter adapter;
     private List<Business> allRestaurants;
+    private SearchView svSearchBar;
 
     @Nullable
     @Override
@@ -61,7 +63,7 @@ public class HomeFragment extends Fragment {
                 .build();
 
         YelpService yelpService = retrofit.create(YelpService.class);
-        yelpService.searchRestaurants("Bearer " + getContext().getString(R.string.yelp_api_key), "Burritos", "New Mexico").enqueue(new Callback<RestaurantSearchResult>() {
+        yelpService.searchRestaurants("Bearer " + getContext().getString(R.string.yelp_api_key), "restaurants", "New Mexico").enqueue(new Callback<RestaurantSearchResult>() {
             @Override
             public void onResponse(Call<RestaurantSearchResult> call, Response<RestaurantSearchResult> response) {
                 Log.i(TAG, "onResponse " + response.toString());
@@ -79,5 +81,56 @@ public class HomeFragment extends Fragment {
                 Log.i(TAG, "onFailure " + t.toString());
             }
         }); //asynchronous call
+
+        svSearchBar = view.findViewById(R.id.svSearchBar);
+        svSearchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                yelpService.searchRestaurants("Bearer " + getContext().getString(R.string.yelp_api_key), s, "New Mexico").enqueue(new Callback<RestaurantSearchResult>() {
+                    @Override
+                    public void onResponse(Call<RestaurantSearchResult> call, Response<RestaurantSearchResult> response) {
+                        Log.i(TAG, "onResponse " + response.toString());
+                        RestaurantSearchResult body = response.body();
+                        if (body == null) {
+                            Log.i(TAG, "Did not receive a valid response body from Yelp API... exiting");
+                            return;
+                        }
+                        allRestaurants.clear();
+                        allRestaurants.addAll(body.getBusinesses());
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<RestaurantSearchResult> call, Throwable t) {
+                        Log.i(TAG, "onFailure " + t.toString());
+                    }
+                }); //asynchronous call
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                yelpService.searchRestaurants("Bearer " + getContext().getString(R.string.yelp_api_key), s, "New Mexico").enqueue(new Callback<RestaurantSearchResult>() {
+                    @Override
+                    public void onResponse(Call<RestaurantSearchResult> call, Response<RestaurantSearchResult> response) {
+                        Log.i(TAG, "onResponse " + response.toString());
+                        RestaurantSearchResult body = response.body();
+                        if (body == null) {
+                            Log.i(TAG, "Did not receive a valid response body from Yelp API... exiting");
+                            return;
+                        }
+                        allRestaurants.clear();
+                        allRestaurants.addAll(body.getBusinesses());
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<RestaurantSearchResult> call, Throwable t) {
+                        Log.i(TAG, "onFailure " + t.toString());
+                    }
+                }); //asynchronous call
+                return false;
+            }
+        });
     }
 }
