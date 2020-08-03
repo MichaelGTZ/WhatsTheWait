@@ -31,6 +31,7 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +103,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                     }
                     if (tbFavorite.isChecked()) {
                         // Set the Parse Restaurant ID
-                        favoritedRestaurant.setParseId();
+                        // favoritedRestaurant.setRestaurantId("asd");
                         // Save new restaurant item
                         favoritedRestaurant.saveInBackground(new SaveCallback() {
                             @Override
@@ -131,7 +132,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                         // Find the restaurant item that was just unfavorited and remove it from the relation
                         ParseRelation<ParseObject> relation = currentUser.getRelation("favoritesRelation");
                         ParseQuery<ParseObject> query = relation.getQuery();
-                        query.whereEqualTo("restaurantId", favoritedRestaurant.getId());
+                        query.whereEqualTo("restaurantId", favoritedRestaurant.getRestaurantId());
                         query.findInBackground(new FindCallback<ParseObject>() {
                             @Override
                             public void done(List<ParseObject> objects, ParseException e) {
@@ -171,7 +172,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                     .error(R.drawable.ic_launcher_foreground)
                     .into(ivRestaurantPic);
             tvRestaurantName.setText(restaurantItem.getName());
-            rbRating.setRating(restaurantItem.getRating());
+            rbRating.setRating((float) restaurantItem.getRating());
             tvRatingCount.setText(String.format("%d",restaurantItem.getReviewCount()));
             tvArea.setText(restaurantItem.getLocation().getAddress1());
             tvDistance.setText(restaurantItem.displayDistance());
@@ -187,7 +188,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             ParseUser currentuser = ParseUser.getCurrentUser();
             ParseRelation<ParseObject> relation = currentuser.getRelation("favoritesRelation");
             ParseQuery<ParseObject> query = relation.getQuery();
-            query.whereEqualTo("restaurantId", restaurantItem.getId());
+            query.whereEqualTo("restaurantId", restaurantItem.getRestaurantId());
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> objects, ParseException e) {
@@ -213,10 +214,13 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             if (position != RecyclerView.NO_POSITION) {
                 // Won't work if class is static
                 Business restaurantItem = restaurants.get(position);
+                Log.i(TAG, "onClick RV: " + restaurantItem);
                 // Create intent for the new activity
                 Intent intent = new Intent(context, RestaurantDetail.class);
-                // Serialize the movie using parceler
-                intent.putExtra(RestaurantItem.class.getSimpleName(), Parcels.wrap(restaurantItem));
+                // Serialize the Business using parceler
+                //restaurantItem.setParseFields();
+                restaurantItem.setParseFields();
+                intent.putExtra(Business.class.getSimpleName(), restaurantItem);
                 // Show activity
                 context.startActivity(intent);
             }

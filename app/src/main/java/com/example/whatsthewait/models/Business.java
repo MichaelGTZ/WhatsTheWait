@@ -1,16 +1,13 @@
 package com.example.whatsthewait.models;
 
+import java.io.Serializable;
 import java.util.List;
 
-import com.example.whatsthewait.RestaurantItem;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
-import org.parceler.Parcel;
-
-@Parcel(analyze = {Business.class})
 @ParseClassName("Restaurant")
 public class Business extends ParseObject {
 
@@ -60,6 +57,18 @@ public class Business extends ParseObject {
     @Expose
     private List<String> transactions = null;
 
+    public static final String KEY_RATING = "rating";
+    public static final String KEY_PRICE = "price";
+    public static final String KEY_PHONE = "phone";
+    public static final String KEY_RESTAURANTID = "restaurantId";
+    public static final String KEY_ALIAS = "alias";
+    public static final String KEY_ISCLOSED = "isClosed";
+    public static final String KEY_REVIEWCOUNT = "reviewCount";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_URL = "url";
+    public static final String KEY_IMAGEURL = "imageUrl";
+    public static final String KEY_DISTANCE = "distance";
+
     public Business() {}
 
     public String displayDistance() {
@@ -68,10 +77,152 @@ public class Business extends ParseObject {
         return String.format("%s mi", distanceInMiles);
     }
 
-    public void setParseId() { put("restaurantId", getId()); }
+    // To create the ParseObject before passing it into an intent
+    public void setParseFields() {
+        setParseRating();
+        setParsePrice();
+        setParsePhone();
+        setParseRestaurantId();
+        setParseAlias();
+        setParseIsClosed();
+        setParseReviewCount();
+        setParseName();
+        setParseUrl();
+        setParseImageUrl();
+        setParseDistance();
+    }
 
-    public String getParseId() { return getString("restaurantId"); }
+    // To show the fields of the ParseObject (separate from the local object)
+    public String parseToString() {
+        return "Business{" +
+                "rating=" + getParseRating() +
+                ", price='" + getParsePrice() + '\'' +
+                ", phone='" + getParsePhone() + '\'' +
+                ", restaurantId='" + getParseRestaurantId() + '\'' +
+                ", alias='" + getParseAlias() + '\'' +
+                ", isClosed=" + getParseIsClosed() +
+                ", reviewCount=" + getParseReviewCount() +
+                ", name='" + getParseName() + '\'' +
+                ", url='" + getParseUrl() + '\'' +
+                ", imageUrl='" + getParseImageUrl() + '\'' +
+                ", distance=" + getParseDistance() +
+                '}';
+    }
 
+    // For the local object
+    @Override
+    public String toString() {
+        return "Business{" +
+                "rating=" + rating +
+                ", price='" + price + '\'' +
+                ", phone='" + phone + '\'' +
+                ", id='" + id + '\'' +
+                ", alias='" + alias + '\'' +
+                ", isClosed=" + isClosed +
+                ", categories=" + categories +
+                ", reviewCount=" + reviewCount +
+                ", name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", coordinates=" + coordinates +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", location=" + location +
+                ", distance=" + distance +
+                ", transactions=" + transactions +
+                '}';
+    }
+
+    // Start of Parse Getters and Setters
+    public double getParseRating() {
+        return getDouble(KEY_RATING);
+    }
+
+    public void setParseRating() {
+        put(KEY_RATING, rating);
+    }
+
+    public String getParsePrice() {
+        return getString(KEY_PRICE);
+    }
+
+    public void setParsePrice() {
+        put(KEY_PRICE, price);
+    }
+
+    public String getParsePhone() {
+        return getString(KEY_PHONE);
+    }
+
+    public void setParsePhone() {
+        put(KEY_PHONE, phone);
+    }
+
+    public String getParseRestaurantId() {
+        return getString(KEY_RESTAURANTID);
+    }
+
+    public void setParseRestaurantId() {
+        put(KEY_RESTAURANTID, id);
+    }
+
+    public String getParseAlias() {
+        return getString(KEY_ALIAS);
+    }
+
+    public void setParseAlias() {
+        put(KEY_ALIAS, alias);
+    }
+
+    public boolean getParseIsClosed() {
+        return getBoolean(KEY_ISCLOSED);
+    }
+
+    public void setParseIsClosed() {
+        put(KEY_ISCLOSED, isClosed);
+    }
+
+    public Number getParseReviewCount() {
+        return getNumber(KEY_REVIEWCOUNT);
+    }
+
+    public void setParseReviewCount() {
+        put(KEY_REVIEWCOUNT, reviewCount);
+    }
+
+    public String getParseName() {
+        return getString(KEY_NAME);
+    }
+
+    public void setParseName() {
+        put(KEY_NAME, name);
+    }
+
+    public String getParseUrl() {
+        return getString(KEY_URL);
+    }
+
+    public void setParseUrl() {
+        put(KEY_URL, url);
+    }
+
+    public String getParseImageUrl() {
+        return getString(KEY_IMAGEURL);
+    }
+
+    public void setParseImageUrl() {
+        put(KEY_IMAGEURL, imageUrl);
+    }
+
+    public double getParseDistance() {
+        return getDouble(KEY_DISTANCE);
+    }
+
+    public void setParseDistance() {
+        put(KEY_DISTANCE, distance);
+    }
+    // End of Parse Getters and Setters
+
+
+    // Start of object Getters and Setters
     public float getRating() {
         return rating;
     }
@@ -96,11 +247,11 @@ public class Business extends ParseObject {
         this.phone = phone;
     }
 
-    public String getId() {
+    public String getRestaurantId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setRestaurantId(String id) {
         this.id = id;
     }
 
@@ -112,7 +263,7 @@ public class Business extends ParseObject {
         this.alias = alias;
     }
 
-    public boolean isIsClosed() {
+    public boolean getIsClosed() {
         return isClosed;
     }
 
@@ -191,4 +342,5 @@ public class Business extends ParseObject {
     public void setTransactions(List<String> transactions) {
         this.transactions = transactions;
     }
+    // End of object Getters and Setters
 }
