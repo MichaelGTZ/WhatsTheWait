@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -82,6 +83,49 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             super(itemview);
 
             ivRestaurantPic = itemview.findViewById(R.id.ivRestaurantPic);
+
+            ivRestaurantPic.setOnTouchListener(new OnDoubleTapListener(context) {
+                @Override
+                public void onDoubleTap(MotionEvent e) {
+                    if (tbFavorite.isChecked() == false) {
+                        ParseUser currentUser = ParseUser.getCurrentUser();
+                        int position = getAdapterPosition();
+                        Business favoritedRestaurant = null;
+                        if (position != RecyclerView.NO_POSITION) {
+                            // Won't work if class is static
+                            favoritedRestaurant = restaurants.get(position);
+                        }
+                        // Set the Parse Restaurant ID
+                        favoritedRestaurant.setParseFields();
+                        // Save new restaurant item
+                        favoritedRestaurant.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Log.i(TAG, "New restaurant item saved");
+                                    currentUser.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if (e == null) {
+                                                Log.i(TAG, "Successfully added to favorites relation");
+                                            } else {
+                                                Log.e(TAG, "Favorites list failed to save", e);
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    Log.e(TAG, "Restaurant item failed to create", e);
+                                }
+                            }
+                        });
+                        // Add item to favorites relation and save
+                        ParseRelation<ParseObject> relation = currentUser.getRelation("favoritesRelation");
+                        relation.add(favoritedRestaurant);
+                        tbFavorite.setChecked(true);
+                    }
+                }
+            });
+
             tvRestaurantName = itemview.findViewById(R.id.tvRestaurantName);
             rbRating = itemview.findViewById(R.id.rbRating);
             tvRatingCount = itemview.findViewById(R.id.tvRatingCount);
@@ -103,7 +147,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
                     }
                     if (tbFavorite.isChecked()) {
                         // Set the Parse Restaurant ID
-                        // favoritedRestaurant.setRestaurantId("asd");
+                        favoritedRestaurant.setParseFields();
                         // Save new restaurant item
                         favoritedRestaurant.saveInBackground(new SaveCallback() {
                             @Override
