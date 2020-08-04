@@ -26,6 +26,10 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.whatsthewait.BitmapScalar;
 import com.example.whatsthewait.LoginActivity;
 import com.example.whatsthewait.R;
@@ -83,7 +87,12 @@ public class ProfileFragment extends Fragment {
             try {
                 File profilePic = profilePicFile.getFile();
                 Bitmap profilePicBitmap = BitmapFactory.decodeFile(profilePic.getAbsolutePath());
-                ivProfilePic.setImageBitmap(profilePicBitmap);
+                Glide.with(getContext())
+                        .load(profilePicBitmap)
+                        .apply(new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(10)))
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .error(R.drawable.ic_launcher_foreground)
+                        .into(ivProfilePic);
             } catch (ParseException e) {
                 Log.e(TAG, "onViewCreated: Failed to load profile pic", e);
             }
