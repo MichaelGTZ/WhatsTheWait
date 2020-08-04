@@ -73,7 +73,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         private TextView tvRatingCount;
         private TextView tvArea;
         private TextView tvDistance;
-        private TextView tvHours;
+        private TextView tvWaitTime;
         private RatingBar rbPrice;
         private ToggleButton tbFavorite;
         private TextView tvCuisine;
@@ -87,7 +87,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             tvRatingCount = itemview.findViewById(R.id.tvRatingCount);
             tvArea = itemview.findViewById(R.id.tvArea);
             tvDistance = itemview.findViewById(R.id.tvDistance);
-            tvHours = itemview.findViewById(R.id.tvHours);
+            tvWaitTime = itemview.findViewById(R.id.tvWaitTime);
             rbPrice = itemview.findViewById(R.id.rbPrice);
 
             tbFavorite = itemview.findViewById(R.id.tbFavorite);
@@ -176,7 +176,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             tvRatingCount.setText(String.format("%d",restaurantItem.getReviewCount()));
             tvArea.setText(restaurantItem.getLocation().getAddress1());
             tvDistance.setText(restaurantItem.displayDistance());
-            tvHours.setText("Open until 9:00 PM");
+            tvWaitTime.setText(String.format("About %d%% full", 60));
             if (restaurantItem.getPrice() != null) {
                 rbPrice.setRating(restaurantItem.getPrice().split("").length);
             } else {
