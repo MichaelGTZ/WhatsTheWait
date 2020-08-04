@@ -68,12 +68,20 @@ public class Business extends ParseObject {
     public static final String KEY_URL = "url";
     public static final String KEY_IMAGEURL = "imageUrl";
     public static final String KEY_DISTANCE = "distance";
+    public static final String KEY_ADDRESS = "address";
+    public static final String KEY_CUISINE = "cuisine";
 
     public Business() {}
 
     public String displayDistance() {
         double milesPerMeter = 0.000621371;
         String distanceInMiles = String.format("%.2f", distance * milesPerMeter);
+        return String.format("%s mi", distanceInMiles);
+    }
+
+    public String displayParseDistance(float parseDistance) {
+        double milesPerMeter = 0.000621371;
+        String distanceInMiles = String.format("%.2f", parseDistance * milesPerMeter);
         return String.format("%s mi", distanceInMiles);
     }
 
@@ -90,6 +98,8 @@ public class Business extends ParseObject {
         setParseUrl();
         setParseImageUrl();
         setParseDistance();
+        setParseAddress();
+        setParseCuisine();
     }
 
     // To show the fields of the ParseObject (separate from the local object)
@@ -145,6 +155,8 @@ public class Business extends ParseObject {
     }
 
     public void setParsePrice() {
+        if (price == null)
+            price = "null";
         put(KEY_PRICE, price);
     }
 
@@ -218,6 +230,22 @@ public class Business extends ParseObject {
 
     public void setParseDistance() {
         put(KEY_DISTANCE, distance);
+    }
+
+    public String getParseAddress() {
+        return getString(KEY_ADDRESS);
+    }
+
+    public void setParseAddress() {
+        put(KEY_ADDRESS, location.getAddress1());
+    }
+
+    public String getParseCuisine() {
+        return getString(KEY_CUISINE);
+    }
+
+    public void setParseCuisine() {
+        put(KEY_CUISINE, categories.get(0).getTitle());
     }
     // End of Parse Getters and Setters
 
