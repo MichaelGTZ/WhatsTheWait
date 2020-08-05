@@ -10,17 +10,17 @@ import androidx.fragment.app.Fragment;
 
 import com.example.whatsthewait.R;
 
-public class DineInFragment extends Fragment {
+public class ReserveFragment extends Fragment {
 
     public static final String ARG_PAGE = "ARG_PAGE";
 
     private int mPage;
     private TextView textviewsample;
 
-    public static DineInFragment newInstance(int page) {
+    public static ReserveFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
-        DineInFragment fragment = new DineInFragment();
+        ReserveFragment fragment = new ReserveFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -34,9 +34,9 @@ public class DineInFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dine_in, container, false);
+        View view = inflater.inflate(R.layout.fragment_reserve, container, false);
         textviewsample = view.findViewById(R.id.textviewtest);
-        textviewsample.setText("Fragment Dine In");
+        textviewsample.setText("Fragment Reserve");
         return view;
     }
 }
