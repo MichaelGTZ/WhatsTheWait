@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import com.example.whatsthewait.fragments.FavoritesFragment;
 import com.example.whatsthewait.fragments.HomeFragment;
 import com.example.whatsthewait.fragments.ProfileFragment;
-import com.example.whatsthewait.fragments.ReservationsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.action_favorites:
                         fragment = new FavoritesFragment();
-                        break;
-                    case R.id.action_reservations:
-                        fragment = new ReservationsFragment();
                         break;
                     default: // profile fragment
                         fragment = new ProfileFragment();
