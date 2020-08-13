@@ -62,7 +62,6 @@ public class FavoritesFragment extends Fragment {
             @Override
             public void done(List<Business> objects, ParseException e) {
                 favoriteRestaurants.addAll(objects);
-                Business favorite = favoriteRestaurants.get(0);
 
                 adapter.notifyDataSetChanged();
             }

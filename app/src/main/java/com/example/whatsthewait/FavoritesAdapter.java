@@ -74,7 +74,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         private TextView tvRatingCount;
         private TextView tvArea;
         private TextView tvDistance;
-        private TextView tvWaitTime;
+        private TextView tvTransactions;
         private RatingBar rbPrice;
         private ToggleButton tbFavorite;
         private TextView tvCuisine;
@@ -131,7 +131,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
             tvRatingCount = itemview.findViewById(R.id.tvRatingCount);
             tvArea = itemview.findViewById(R.id.tvArea);
             tvDistance = itemview.findViewById(R.id.tvDistance);
-            tvWaitTime = itemview.findViewById(R.id.tvWaitTime);
+            tvTransactions = itemview.findViewById(R.id.tvTransactions);
             rbPrice = itemview.findViewById(R.id.rbPrice);
 
             tbFavorite = itemview.findViewById(R.id.tbFavorite);
@@ -212,15 +212,17 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
             Glide.with(context)
                     .load(restaurantItem.getParseImageUrl())
                     .apply(new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(10)))
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .error(R.drawable.ic_launcher_foreground)
+                    .placeholder(R.color.colorAccent)
+                    .error(R.drawable.ic_launcher_background)
                     .into(ivRestaurantPic);
             tvRestaurantName.setText(restaurantItem.getParseName());
             rbRating.setRating((float) restaurantItem.getParseRating());
             tvRatingCount.setText(String.format("%d",restaurantItem.getParseReviewCount()));
             tvArea.setText(restaurantItem.getParseAddress());
             tvDistance.setText(restaurantItem.displayParseDistance((float) restaurantItem.getParseDistance()));
-            tvWaitTime.setText(String.format("About %d%% full", 60));
+
+            tvTransactions.setText(restaurantItem.getParseTransactions());
+
             if (restaurantItem.getPrice() != null) {
                 rbPrice.setRating(restaurantItem.getParsePrice().split("").length);
             } else {
@@ -229,26 +231,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
             tvCuisine.setText(restaurantItem.getParseCuisine());
 
             tbFavorite.setChecked(true);
-//            // Check if the restaurant is a favorite and fill in the heart if needed
-//            ParseUser currentuser = ParseUser.getCurrentUser();
-//            ParseRelation<ParseObject> relation = currentuser.getRelation("favoritesRelation");
-//            ParseQuery<ParseObject> query = relation.getQuery();
-//            query.whereEqualTo("restaurantId", restaurantItem.getRestaurantId());
-//            query.findInBackground(new FindCallback<ParseObject>() {
-//                @Override
-//                public void done(List<ParseObject> objects, ParseException e) {
-//                    if (e != null) {
-//                        Log.e(TAG, "On Bind: Error finding restaurant item", e);
-//                    } else {
-//                        Log.i(TAG, "On Bind: Successfully found matching restaurant:  " + objects.toString());
-//                        if (objects.isEmpty()) {
-//                            tbFavorite.setChecked(false);
-//                        } else {
-//                            tbFavorite.setChecked(true);
-//                        }
-//                    }
-//                }
-//            });
         }
 
         @Override
