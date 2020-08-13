@@ -1,6 +1,7 @@
 package com.example.whatsthewait.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.whatsthewait.R;
+import com.example.whatsthewait.RestaurantDetail;
+import com.example.whatsthewait.RestaurantSearchResult;
 import com.example.whatsthewait.Review;
 import com.example.whatsthewait.ReviewsAdapter;
+import com.example.whatsthewait.ReviewsSearchResult;
+import com.example.whatsthewait.YelpService;
+import com.example.whatsthewait.models.BusinessDetailed;
 import com.example.whatsthewait.models.ReviewUser;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ReviewsFragment extends Fragment {
 
@@ -29,16 +43,17 @@ public class ReviewsFragment extends Fragment {
     private RecyclerView rvReviews;
     private ReviewsAdapter adapter;
     private List<Review> allReviews;
+    private BusinessDetailed businessDetailed;
 
     private int mPage;
-    private TextView textviewsample;
 
     public ReviewsFragment() {
     }
 
-    public static ReviewsFragment newInstance(int page) {
+    public static ReviewsFragment newInstance(int page, BusinessDetailed businessDetailed) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
+        args.putParcelable("restaurant", Parcels.wrap(businessDetailed));
         ReviewsFragment fragment = new ReviewsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -48,6 +63,7 @@ public class ReviewsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
+        businessDetailed = Parcels.unwrap(getArguments().getParcelable("restaurant"));
     }
 
     @Override
@@ -69,17 +85,34 @@ public class ReviewsFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvReviews.setLayoutManager(linearLayoutManager);
 
-        // Testing functionality with sample reviews
-        ReviewUser user = new ReviewUser("Michael G.", "https://s3-media3.fl.yelpcdn.com/photo/iwoAD12zkONZxJ94ChAaMg/o.jpg");
-        Review review1 = new Review(1, user, "Very good many food", "2016-08-29 00:41:13");
-        Review review2 = new Review(2, user, "Very good many food", "2016-08-29 00:41:13");
-        Review review3 = new Review(3, user, "Very good many food", "2016-08-29 00:41:13");
-        Review review4 = new Review(4, user, "Very good many food", "2016-08-29 00:41:13");
+        // Make a search for the detailed item
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(this.getString(R.string.yelp_base_url))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        allReviews.add(review1);
-        allReviews.add(review2);
-        allReviews.add(review3);
-        allReviews.add(review4);
-        adapter.notifyDataSetChanged();
+        YelpService yelpService = retrofit.create(YelpService.class);
+
+        Log.i(TAG, "onViewCreated: " + businessDetailed.toString());
+        businessDetailed = ((RestaurantDetail) this.getActivity()).businessDetailedItem;
+        yelpService.searchRestaurantReviews("Bearer " + getContext().getString(R.string.yelp_api_key), businessDetailed.getRestaurantId()).enqueue(new Callback<ReviewsSearchResult>() {
+            @Override
+            public void onResponse(Call<ReviewsSearchResult> call, Response<ReviewsSearchResult> response) {
+                Log.i(TAG, "onResponse " + response.toString());
+                ReviewsSearchResult body = response.body();
+                if (body == null) {
+                    Log.i(TAG, "Did not receive a valid response body from Yelp API... exiting");
+                    return;
+                }
+                allReviews.clear();
+                allReviews.addAll(body.getReviews());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<ReviewsSearchResult> call, Throwable t) {
+                Log.i(TAG, "onFailure " + t.toString());
+            }
+        }); //asynchronous call
     }
 }

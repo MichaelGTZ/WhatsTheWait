@@ -67,20 +67,32 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView ivProfilePic;
+        private TextView tvReviewerName;
+        private RatingBar rbRating;
+        private TextView tvTimeAgo;
+        private TextView tvText;
 
         public ViewHolder(@NonNull View itemview) {
             super(itemview);
 
             ivProfilePic = itemview.findViewById(R.id.ivProfilePic);
+            tvReviewerName = itemview.findViewById(R.id.tvReviewerName);
+            rbRating = itemview.findViewById(R.id.rbRating);
+            tvTimeAgo = itemview.findViewById(R.id.tvTimeAgo);
+            tvText = itemview.findViewById(R.id.tvText);
         }
 
         public void bind(Review review) {
             Glide.with(context)
                     .load(review.getUser().getImageUrl())
                     .circleCrop()
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .error(R.drawable.ic_launcher_foreground)
+                    .placeholder(R.color.colorAccent)
+                    .error(R.drawable.user_unselected)
                     .into(ivProfilePic);
+            tvReviewerName.setText(review.getUser().getName());
+            rbRating.setRating(review.getRating());
+            tvTimeAgo.setText(review.getRelativeTimeAgo());
+            tvText.setText(review.getText());
         }
     }
 }
