@@ -103,17 +103,14 @@ An app that provides real-time data on your favorite restaurant's availability, 
     * Log out
 
 ## Wireframes
-[Add picture of your hand sketched wireframes in this section]
-<img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
-
-### [BONUS] Digital Wireframes & Mockups
-
-### [BONUS] Interactive Prototype
+<img src="https://i.imgur.com/Tt4c3fa.jpg" width=600>
 
 ## Schema 
-[This section will be completed in Unit 9]
+[Add Schema]
+
 ### Models
 [Add table of models]
+
 ### Networking
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
