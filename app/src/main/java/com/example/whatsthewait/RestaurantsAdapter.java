@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.whatsthewait.models.Business;
 import com.parse.FindCallback;
@@ -74,7 +75,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
         private TextView tvRatingCount;
         private TextView tvArea;
         private TextView tvDistance;
-        private TextView tvWaitTime;
+        private TextView tvTransactions;
         private RatingBar rbPrice;
         private ToggleButton tbFavorite;
         private TextView tvCuisine;
@@ -131,7 +132,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             tvRatingCount = itemview.findViewById(R.id.tvRatingCount);
             tvArea = itemview.findViewById(R.id.tvArea);
             tvDistance = itemview.findViewById(R.id.tvDistance);
-            tvWaitTime = itemview.findViewById(R.id.tvWaitTime);
+            tvTransactions = itemview.findViewById(R.id.tvTransactions);
             rbPrice = itemview.findViewById(R.id.rbPrice);
 
             tbFavorite = itemview.findViewById(R.id.tbFavorite);
@@ -212,15 +213,68 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsAdapter.
             Glide.with(context)
                     .load(restaurantItem.getImageUrl())
                     .apply(new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(10)))
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .error(R.drawable.ic_launcher_foreground)
+                    .placeholder(R.color.colorAccent)
+                    .error(R.drawable.ic_launcher_background)
+                    .transition(DrawableTransitionOptions.withCrossFade())
                     .into(ivRestaurantPic);
             tvRestaurantName.setText(restaurantItem.getName());
             rbRating.setRating((float) restaurantItem.getRating());
             tvRatingCount.setText(String.format("%d",restaurantItem.getReviewCount()));
-            tvArea.setText(restaurantItem.getLocation().getAddress1());
+            if (restaurantItem.getLocation() == null || restaurantItem.getLocation().getAddress1() == null || restaurantItem.getLocation().getAddress1().isEmpty()) {
+                tvArea.setText("No Address Provided");
+            } else {
+                tvArea.setText(restaurantItem.getLocation().getAddress1());
+            }
             tvDistance.setText(restaurantItem.displayDistance());
-            tvWaitTime.setText(String.format("About %d%% full", 60));
+            if (restaurantItem.getIsClosed() == true) {
+                tvTransactions.setText("Restaurant is Permanently Closed");
+            } else {
+                String transaction1;
+                String transaction2;
+                String transaction3;
+                switch (restaurantItem.getTransactions().size()) {
+                    case 0:
+                        tvTransactions.setText("No dining options provided");
+                        break;
+                    case 1:
+                        transaction1 = restaurantItem.getTransactions().get(0);
+                        if (transaction1.startsWith("r")) {
+                            transaction1 = "reservations";
+                        }
+                        tvTransactions.setText(transaction1.substring(0, 1).toUpperCase() + transaction1.substring(1));
+                        break;
+                    case 2:
+                        transaction1 = restaurantItem.getTransactions().get(0);
+                        transaction2 = restaurantItem.getTransactions().get(1);
+                        if (transaction1.startsWith("r")) {
+                            transaction1 = "reservations";
+                        }
+                        if (transaction2.startsWith("r")) {
+                            transaction2 = "reservations";
+                        }
+                        String result = transaction1.substring(0, 1).toUpperCase() + transaction1.substring(1)
+                                + " and " + transaction2.substring(0, 1).toUpperCase() + transaction2.substring(1);
+                        tvTransactions.setText(result);
+                        break;
+                    default: // 3 items
+                        transaction1 = restaurantItem.getTransactions().get(0);
+                        transaction2 = restaurantItem.getTransactions().get(1);
+                        transaction3 = restaurantItem.getTransactions().get(2);
+                        if (transaction1.startsWith("r")) {
+                            transaction1 = "reservations";
+                        }
+                        if (transaction2.startsWith("r")) {
+                            transaction2 = "reservations";
+                        }
+                        if (transaction3.startsWith("r")) {
+                            transaction3 = "reservations";
+                        }
+                        result = transaction1.substring(0, 1).toUpperCase() + transaction1.substring(1)
+                                + ", " + transaction2.substring(0, 1).toUpperCase() + transaction2.substring(1)
+                                + ", and " + transaction3.substring(0, 1).toUpperCase() + transaction3.substring(1);
+                        tvTransactions.setText(result);
+                }
+            }
             if (restaurantItem.getPrice() != null) {
                 rbPrice.setRating(restaurantItem.getPrice().split("").length);
             } else {

@@ -17,12 +17,15 @@
 
     <TextView
         android:id="@+id/tvRestaurantName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="@color/colorPrimary"
         android:textSize="22sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/tbFavorite"
         app:layout_constraintStart_toEndOf="@id/ivRestaurantPic"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Restaurant Name" />
@@ -58,9 +61,8 @@
         android:id="@+id/tvRatingCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:textSize="12sp"
-        android:layout_marginTop="2dp"
         app:layout_constraintStart_toEndOf="@id/rbRating"
         app:layout_constraintTop_toTopOf="@id/rbRating"
         app:layout_constraintBottom_toBottomOf="@id/rbRating"
@@ -68,12 +70,16 @@
 
     <TextView
         android:id="@+id/tvArea"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         app:layout_constraintStart_toEndOf="@id/ivRestaurantPic"
         app:layout_constraintTop_toBottomOf="@id/rbRating"
         app:layout_constraintBottom_toTopOf="@+id/tvCuisine"
+        app:layout_constraintEnd_toStartOf="@+id/ivDistance"
         tools:text="Albuquerque" />
 
     <ImageView
@@ -105,7 +111,7 @@
         android:layout_marginStart="10dp"
         app:layout_constraintStart_toEndOf="@id/ivRestaurantPic"
         app:layout_constraintTop_toBottomOf="@id/tvArea"
-        app:layout_constraintBottom_toTopOf="@+id/tvWaitTime"
+        app:layout_constraintBottom_toTopOf="@+id/tvTransactions"
         tools:text="American" />
 
     <RatingBar
@@ -126,7 +132,7 @@
         app:layout_constraintTop_toTopOf="@id/tvCuisine" />
 
     <TextView
-        android:id="@+id/tvWaitTime"
+        android:id="@+id/tvTransactions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -134,7 +140,7 @@
         android:layout_marginBottom="5dp"
         app:layout_constraintStart_toEndOf="@id/ivRestaurantPic"
         app:layout_constraintBottom_toBottomOf="@id/ivRestaurantPic"
-        tools:text="About 60% full" />
+        tools:text="Transaction Types here" />
 
     <View
         android:id="@+id/bottomLine"
