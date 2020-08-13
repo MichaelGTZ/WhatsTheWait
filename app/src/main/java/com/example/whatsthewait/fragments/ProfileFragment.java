@@ -12,10 +12,12 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.whatsthewait.BitmapScalar;
 import com.example.whatsthewait.LoginActivity;
@@ -90,8 +93,9 @@ public class ProfileFragment extends Fragment {
                 Glide.with(getContext())
                         .load(profilePicBitmap)
                         .apply(new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(10)))
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .error(R.drawable.ic_launcher_foreground)
+                        .placeholder(R.color.colorAccent)
+                        .error(R.drawable.ic_launcher_background)
+                        .transition(DrawableTransitionOptions.withCrossFade())
                         .into(ivProfilePic);
             } catch (ParseException e) {
                 Log.e(TAG, "onViewCreated: Failed to load profile pic", e);
@@ -114,8 +118,46 @@ public class ProfileFragment extends Fragment {
         });
 
         etChangeUsername = view.findViewById(R.id.etChangeUsername);
+        etChangeUsername.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    // Call password change method
+                    currentUser.setUsername(String.valueOf(etChangeUsername.getText()));
+                    currentUser.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            Log.i(TAG, "done: Username successfully changed");
+                            Toast.makeText(getContext(), "Username successfully changed", Toast.LENGTH_SHORT).show();
+                            etChangeUsername.setText("");
+                            tvUsername.setText(currentUser.getUsername());
+                        }
+                    });
+                    return true;
+                }
+                return false;
+            }
+        });
 
         etChangePassword = view.findViewById(R.id.etChangePassword);
+        etChangePassword.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    currentUser.setPassword(String.valueOf(etChangePassword.getText()));
+                    currentUser.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            Log.i(TAG, "done: password successfully changed");
+                            Toast.makeText(getContext(), "Password successfully changed", Toast.LENGTH_SHORT).show();
+                            etChangePassword.setText("");
+                        }
+                    });
+                    return true;
+                }
+                return false;
+            }
+        });
 
         tvLogOut = view.findViewById(R.id.tvLogOut);
         tvLogOut.setOnClickListener(new View.OnClickListener() {

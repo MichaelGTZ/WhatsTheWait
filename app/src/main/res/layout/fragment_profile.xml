@@ -6,11 +6,43 @@
     xmlns:tools="http://schemas.android.com/tools" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:gravity="center"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/whats_the_wait_logo_big"
+            />
+
+        <View
+            android:id="@+id/bottomLine"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#A9A9A9" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/profileBody"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent" >
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topBar" >
 
         <ImageView
             android:id="@+id/ivprofilePic"
@@ -31,7 +63,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivprofilePic"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="30dp"
+            android:layout_marginTop="15dp"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/colorPrimary"
@@ -87,6 +119,8 @@
             android:textSize="16sp"
             android:textColor="@color/colorPrimary"
             android:hint="Change Username"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             />
 
         <TextView
@@ -112,6 +146,8 @@
             android:inputType="textPassword"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             app:layout_constraintBottom_toBottomOf="@+id/tvPasswordPlaceholder"
             app:layout_constraintStart_toEndOf="@id/tvUsernamePlaceholder"
             app:layout_constraintTop_toTopOf="@+id/tvPasswordPlaceholder"
