@@ -14,7 +14,6 @@ public class ParseApplication extends Application {
 
         // Register your Parse models
         ParseObject.registerSubclass(RestaurantItem.class);
-        ParseObject.registerSubclass(ReservationItem.class);
         ParseObject.registerSubclass(Business.class);
 
         // set applicationId, and server server based on the values in the Heroku settings.
