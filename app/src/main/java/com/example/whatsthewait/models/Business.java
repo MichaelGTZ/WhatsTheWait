@@ -70,6 +70,7 @@ public class Business extends ParseObject {
     public static final String KEY_DISTANCE = "distance";
     public static final String KEY_ADDRESS = "address";
     public static final String KEY_CUISINE = "cuisine";
+    public static final String KEY_TRANSACTIONS = "transactions";
 
     public Business() {}
 
@@ -100,6 +101,7 @@ public class Business extends ParseObject {
         setParseDistance();
         setParseAddress();
         setParseCuisine();
+        setParseTransactions();
     }
 
     // To show the fields of the ParseObject (separate from the local object)
@@ -246,6 +248,62 @@ public class Business extends ParseObject {
 
     public void setParseCuisine() {
         put(KEY_CUISINE, categories.get(0).getTitle());
+    }
+
+    public String getParseTransactions() {
+        return getString(KEY_TRANSACTIONS);
+    }
+
+    public void setParseTransactions() {
+        String result;
+        if (isClosed == true) {
+            result = "Restaurant is Permanently Closed";
+        } else {
+            String transaction1;
+            String transaction2;
+            String transaction3;
+            switch (transactions.size()) {
+                case 0:
+                    result = "No dining options provided";
+                    break;
+                case 1:
+                    transaction1 = transactions.get(0);
+                    if (transaction1.startsWith("r")) {
+                        transaction1 = "reservations";
+                    }
+                    result = transaction1.substring(0, 1).toUpperCase() + transaction1.substring(1);
+                    break;
+                case 2:
+                    transaction1 = transactions.get(0);
+                    transaction2 = transactions.get(1);
+                    if (transaction1.startsWith("r")) {
+                        transaction1 = "reservations";
+                    }
+                    if (transaction2.startsWith("r")) {
+                        transaction2 = "reservations";
+                    }
+                    result = transaction1.substring(0, 1).toUpperCase() + transaction1.substring(1)
+                            + " and " + transaction2.substring(0, 1).toUpperCase() + transaction2.substring(1);
+                    break;
+                default: // 3 items
+                    transaction1 = transactions.get(0);
+                    transaction2 = transactions.get(1);
+                    transaction3 = transactions.get(2);
+                    if (transaction1.startsWith("r")) {
+                        transaction1 = "reservations";
+                    }
+                    if (transaction2.startsWith("r")) {
+                        transaction2 = "reservations";
+                    }
+                    if (transaction3.startsWith("r")) {
+                        transaction3 = "reservations";
+                    }
+                    result = transaction1.substring(0, 1).toUpperCase() + transaction1.substring(1)
+                            + ", " + transaction2.substring(0, 1).toUpperCase() + transaction2.substring(1)
+                            + ", and " + transaction3.substring(0, 1).toUpperCase() + transaction3.substring(1);
+            }
+        }
+        put(KEY_TRANSACTIONS, result);
     }
     // End of Parse Getters and Setters
 

@@ -22,6 +22,16 @@ public class Open {
     @Expose
     private int day;
 
+    @Override
+    public String toString() {
+        return "Open{" +
+                "isOvernight=" + isOvernight +
+                ", start='" + start + '\'' +
+                ", end='" + end + '\'' +
+                ", day=" + day +
+                '}';
+    }
+
     public boolean isIsOvernight() {
         return isOvernight;
     }

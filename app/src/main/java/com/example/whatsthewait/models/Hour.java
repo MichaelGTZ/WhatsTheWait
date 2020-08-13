@@ -37,7 +37,7 @@ public class Hour {
         this.hoursType = hoursType;
     }
 
-    public boolean isIsOpenNow() {
+    public boolean IsOpenNow() {
         return isOpenNow;
     }
 

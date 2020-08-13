@@ -134,7 +134,9 @@
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="@id/rbRating"
         app:layout_constraintTop_toBottomOf="@id/tvAddress"
-        tools:text="9:00 AM to 9:00 PM"
+        android:textColor="#008037"
+        android:textStyle="bold"
+        tools:text="Open Now"
         android:textSize="18dp"
         />
 
@@ -147,6 +149,18 @@
         app:layout_constraintStart_toStartOf="@id/rbRating"
         app:layout_constraintTop_toBottomOf="@id/tvHours"
         tools:text="American"
+        android:textSize="18dp"
+        />
+
+    <TextView
+        android:id="@+id/tvBusy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/tvDistance"
+        app:layout_constraintTop_toTopOf="@id/tvCuisine"
+        app:layout_constraintBottom_toBottomOf="@+id/tvCuisine"
+        tools:text="Currently 60% Full"
         android:textSize="18dp"
         />
 
